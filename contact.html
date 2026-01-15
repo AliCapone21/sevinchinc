@@ -41,6 +41,49 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="css/responsive.css">
+
+		<style>
+
+.sms-consent-wrapper {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+/* Checkbox reset */
+.sms-consent-wrapper input[type="checkbox"] {
+    appearance: auto !important;
+    -webkit-appearance: checkbox !important;
+    width: 14px;
+    height: 14px;
+    margin-top: 4px;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: #1a73e8;
+}
+
+/* Text */
+.sms-consent-text {
+    display: block !important;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #555;
+    cursor: pointer;
+    margin: 0;
+}
+
+/* Links */
+.sms-consent-text a {
+    color: #1a73e8;
+    text-decoration: underline;
+}
+
+.sms-consent-text a:hover {
+    text-decoration: none;
+}
+
+		</style>
 		
     </head>
     <body>
@@ -178,10 +221,10 @@
 											</div>
 										</div>
 										<div class="col-lg-6">
-											<div class="form-group">
-												<input type="text" name="phone" placeholder="Phone" required>
-											</div>
-										</div>
+                                           <div class="form-group">
+                                               <input type="tel" id="phone" name="phone" placeholder="Phone" maxlength="17" required>
+                                           </div>
+                                       </div>
 										<div class="col-lg-6">
 											<div class="form-group">
 												<input type="text" name="subject" placeholder="Subject" required>
@@ -193,10 +236,38 @@
 											</div>
 										</div>
 										<div class="col-12">
-											<div class="form-group login-btn">
-												<button class="btn" type="submit">Send</button>
-											</div>
+											<button class="btn" type="submit" id="sendBtn" disabled>
+                                             <span id="sendText">Send</span>
+                                        </button>
 										</div>
+										<div class="col-12 mt-3">
+<div class="col-12 mt-3">
+    <div class="sms-consent-wrapper">
+        <input
+            type="checkbox"
+            id="smsConsent"
+            name="sms_consent"
+            required
+        >
+
+        <label for="smsConsent" class="sms-consent-text">
+            By checking this box, I consent to receive text messages related to service-related communication,
+            appointment reminders, shipment updates, and customer support messages from
+            <strong>SEVINCH INC</strong>.
+            You can reply <strong>STOP</strong> at any time to opt out. Message and data rates may apply.
+            Message frequency may vary. Text <strong>HELP</strong> to <strong>614 495 9073</strong> for assistance.
+            For more information, please review our
+            <a href="privacy.html" target="_blank">Privacy Policy</a>
+            and
+            <a href="terms-of-service.html" target="_blank">SMS Terms and Conditions</a>.
+        </label>
+    </div>
+</div>
+
+
+
+
+										
 									</div>
 								</form>
 								<div id="formSuccessMessage" class="form-success-message">Your message has been sent successfully!</div>
@@ -329,7 +400,7 @@
 					<div class="row">
 						<div class="col-lg-12 col-md-12 col-12">
 							<div class="copyright-content text-center">
-								<p>&copy; 2025 SEVINCH INC. All rights reserved.</p>
+								<p>&copy; 2026 SEVINCH INC. All rights reserved.</p>
 							</div>
 						</div>
 					</div>
@@ -339,27 +410,52 @@
 		<!--/ End Footer Area -->
 
 		<script>
+		document.addEventListener("DOMContentLoaded", function () {
+    const contactForm = document.getElementById("contactForm");
+    const successMessage = document.getElementById("formSuccessMessage");
+    const sendBtn = document.getElementById("sendBtn");
+    const sendText = document.getElementById("sendText");
+
+    if (!contactForm) return;
+
+    contactForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        // Disable button + show sending state
+        sendBtn.disabled = true;
+        sendText.textContent = "Sending...";
+
+        // Fake network delay (3 seconds)
+        setTimeout(() => {
+            // Reset form
+            contactForm.reset();
+
+            // Reset checkbox-dependent button state
+            sendBtn.disabled = true;
+            sendText.textContent = "Send";
+
+            // Show success message
+            successMessage.style.display = "block";
+
+            // Auto-hide success message
+            setTimeout(() => {
+                successMessage.style.display = "none";
+            }, 4000);
+        }, 3000);
+    });
+});
 			document.addEventListener("DOMContentLoaded", function () {
-				const contactForm = document.getElementById("contactForm");
-				const successMessage = document.getElementById("formSuccessMessage");
+    const smsCheckbox = document.getElementById("smsConsent");
+    const sendBtn = document.getElementById("sendBtn");
 
-				if (contactForm) {
-					contactForm.addEventListener("submit", function (event) {
-						event.preventDefault(); // Prevent real submission
+    if (smsCheckbox && sendBtn) {
+        sendBtn.disabled = true;
 
-						// Optional: clear form
-						contactForm.reset();
-
-						// Show success message
-						successMessage.style.display = "block";
-
-						// Auto-hide after 4 seconds
-						setTimeout(() => {
-							successMessage.style.display = "none";
-						}, 4000);
-					});
-				}
-			});
+        smsCheckbox.addEventListener("change", function () {
+            sendBtn.disabled = !this.checked;
+        });
+    }
+});
 		</script>
 
 
