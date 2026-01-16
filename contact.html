@@ -236,7 +236,7 @@
 											</div>
 										</div>
 										<div class="col-12">
-											<button class="btn" type="submit" id="sendBtn" disabled>
+											<button class="btn" type="submit" id="sendBtn">
                                              <span id="sendText">Send</span>
                                         </button>
 										</div>
@@ -247,7 +247,6 @@
             type="checkbox"
             id="smsConsent"
             name="sms_consent"
-            required
         >
 
         <label for="smsConsent" class="sms-consent-text">
@@ -431,7 +430,7 @@
             contactForm.reset();
 
             // Reset checkbox-dependent button state
-            sendBtn.disabled = true;
+            sendBtn.disabled = false;
             sendText.textContent = "Send";
 
             // Show success message
@@ -444,18 +443,7 @@
         }, 3000);
     });
 });
-			document.addEventListener("DOMContentLoaded", function () {
-    const smsCheckbox = document.getElementById("smsConsent");
-    const sendBtn = document.getElementById("sendBtn");
-
-    if (smsCheckbox && sendBtn) {
-        sendBtn.disabled = true;
-
-        smsCheckbox.addEventListener("change", function () {
-            sendBtn.disabled = !this.checked;
-        });
-    }
-});
+	
 		</script>
 
 
